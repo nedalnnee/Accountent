@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Accountent</string>
+    <string name="login_button_text">Log in</string>
+    <string name="login_username_text">Username</string>
+    <string name="login_pass_text">Password</string>
+    <string name="login_sign_up_text">Sign Up</string>
+    <string name="made_by_msn_it">Made By MSN-IT</string>
+</resources>

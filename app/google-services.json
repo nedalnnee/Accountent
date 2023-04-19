@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "412131424700",
+    "project_id": "accountenter-msn",
+    "storage_bucket": "accountenter-msn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412131424700:android:e387f942cf6c983aafd3b9",
+        "android_client_info": {
+          "package_name": "com.msnit.accountent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412131424700-2ukbgc6a7r389rspcbfoiogimd447l9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7YZcIU0JO4qliw3tIt_g1EQrC-ZeYGMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412131424700-2ukbgc6a7r389rspcbfoiogimd447l9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

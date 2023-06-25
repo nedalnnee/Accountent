@@ -1,0 +1,6 @@
+<resources>
+    <style name="Widget.Theme.Accountent.MyView" parent="">
+        <item name="android:background">@color/gray</item>
+        <item name="exampleColor">@color/secendery_dark</item>
+    </style>
+</resources>

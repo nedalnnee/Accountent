@@ -5,4 +5,9 @@
     <string name="login_pass_text">Password</string>
     <string name="login_sign_up_text">Sign Up</string>
     <string name="made_by_msn_it">Made By MSN-IT</string>
+    <string name="groups">Groups</string>
+    <string name="friends">Friends</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="my_groups">My Groups</string>
 </resources>

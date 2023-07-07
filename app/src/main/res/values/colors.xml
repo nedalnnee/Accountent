@@ -17,6 +17,8 @@
     <color name="button_pressed_color">#DC3A0D</color>
     <color name="button_default_color">#ff6200</color>
     <color name="button_shadow_color">#FF757575</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 
 
 </resources>

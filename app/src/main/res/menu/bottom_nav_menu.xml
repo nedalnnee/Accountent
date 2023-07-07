@@ -4,8 +4,12 @@
 
     <item
         android:id="@+id/groups"
+        android:icon="@drawable/account_balance_24"
+        android:title="@string/groups" />
+    <item
+        android:id="@+id/friends"
         android:icon="@drawable/baseline_groups_24"
-        android:title="Groupes" />
+        android:title="@string/friends" />
 
     <item
         android:id="@+id/placeholder"
@@ -14,6 +18,10 @@
     <item
         android:id="@+id/settings"
         android:icon="@drawable/baseline_settings_24"
-        android:title="Settings" />
+        android:title="@string/settings" />
+  <item
+        android:id="@+id/profile"
+        android:icon="@drawable/account_box_24"
+        android:title="@string/profile" />
 
 </menu>

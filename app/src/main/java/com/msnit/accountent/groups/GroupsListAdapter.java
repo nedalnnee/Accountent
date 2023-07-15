@@ -39,9 +39,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupItemsHolder> {
     @Override
     public void onBindViewHolder(final GroupItemsHolder viewHolder, final int position) {
         final int index = viewHolder.getAdapterPosition();
-        viewHolder.titleTV.setText(list.get(position).title);
-        viewHolder.lastChangeTV.setText(list.get(position).lastChange.toString());
-        viewHolder.accountsNumTV.setText(list.get(position).accountsNum + " ");
+        viewHolder.titleTV.setText(list.get(position).getName());
+        viewHolder.lastChangeTV.setText(list.get(position).getCreationDate().toString());
+        viewHolder.accountsNumTV.setText(list.get(position).getAccountsNum() + " Accounts ");
         viewHolder.view.setOnClickListener(view -> listener.click(index));
     }
 

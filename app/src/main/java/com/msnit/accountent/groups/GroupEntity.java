@@ -1,16 +1,52 @@
 package com.msnit.accountent.groups;
 
-import java.sql.Date;
+import com.msnit.accountent.accounts.AccountEntity;
 
-public class GroupEntity {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
 
-    String title;
-    Date lastChange;
-    int accountsNum;
+public class GroupEntity implements Serializable {
+    private String id;
+    private String name;
+    private String creator;
+    private Date creationDate;
+    private Date lastChange;
+    private int accountsNum;
 
-    public GroupEntity(String title, Date lastChange, int accountsNum) {
-        this.title = title;
-        this.lastChange = lastChange;
+    public GroupEntity() {
+    }
+
+    public GroupEntity(String id, String name, String creator, Date creationDate,  int accountsNum) {
+        this.id = id;
+        this.name = name;
+        this.creator = creator;
+        this.creationDate = creationDate;
         this.accountsNum = accountsNum;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Date getLastChange() {
+        return lastChange;
+    }
+
+    public int getAccountsNum() {
+        return accountsNum;
+    }
 }
+

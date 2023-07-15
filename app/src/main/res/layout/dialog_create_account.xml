@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Account Title"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/editTextAccountName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:autofillHints="Account Name" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_currency"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/editTextCurrency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:autofillHints="Currency" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_initial_cash"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/editTextInitialCash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:autofillHints="Initial Cash" />
+
+</LinearLayout>

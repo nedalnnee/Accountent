@@ -11,31 +11,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
+    EditText emailInput;
+    EditText passwordInput;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        FirebaseApp.initializeApp(this);
 
 
         Button loginButton = findViewById(R.id.login);
-        EditText emailInput = findViewById(R.id.emailInput);
-        EditText passwordInput = findViewById(R.id.passwordInput);
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput = findViewById(R.id.passwordInput);
 
-        loginButton.setOnClickListener((view) -> {
-            Intent intent = new Intent(LoginActivity.this, GroupsActivity.class);
-            startActivity(intent);
-
-            Toast.makeText(getApplicationContext(), emailInput.getText().toString(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(), passwordInput.getText().toString(), Toast.LENGTH_LONG).show();
-
-
-        });
+        loginButton.setOnClickListener((view) -> signIn(emailInput, passwordInput));
 
         findViewById(R.id.go_to_login_from_sign_up_btn).setOnClickListener((view) -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
@@ -45,15 +41,15 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            login(currentUser);
+            login();
         }
     }
 
@@ -63,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordInput.getText().toString();
 
         if (email.trim().isBlank() || password.trim().isBlank()) {
-            Toast.makeText(getApplicationContext(), "فاضي", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
             return;
         }
         mAuth.signInWithEmailAndPassword(email, password)
@@ -71,23 +67,25 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        login(user);
+                        login();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+
                         failedLogin();
                     }
                 });
     }
 
     private void failedLogin() {
-
+        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                Toast.LENGTH_SHORT).show();
     }
 
-    private void login(FirebaseUser user) {
+    private void login() {
+        Intent intent = new Intent(LoginActivity.this, GroupsActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 

@@ -5,22 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".GroupsActivity">
+    tools:context=".TransactionActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/title"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="top|center"
-            android:background="@color/primary_dark"
-            android:gravity="center"
-            android:text="@string/my_groups"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_back_arrow"
+                android:background="@color/primary_dark"
+                android:contentDescription="@string/back"
+                android:padding="12dp" />
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@id/backButton"
+                android:background="@color/primary_dark"
+                android:gravity="center"
+                android:text="@string/transactions"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -32,7 +48,7 @@
         android:layout_marginBottom="56dp"
         android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".GroupsActivity">
+        tools:context=".TransactionActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +56,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/groupsList"
+                android:id="@+id/transactionList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
@@ -66,17 +82,17 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="16dp"
             app:backgroundTint="@color/secendery_dark"
-            app:menu="@menu/bottom_nav_menu" />
+            app:menu="@menu/transactions_bottom_nav_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createGroupBtn"
+        android:id="@+id/createTransactionBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary"
 
-        android:contentDescription="@string/app_name"
+        android:contentDescription="@string/add_transaction"
         android:src="@drawable/add"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"

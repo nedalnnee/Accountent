@@ -1,4 +1,4 @@
-package com.msnit.accountent.groups;
+package com.msnit.accountent.accounts;
 
 import android.view.View;
 import android.widget.TextView;
@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.msnit.accountent.R;
 
-public class GroupItemsHolder extends RecyclerView.ViewHolder {
+public class AccountsItemsHolder extends RecyclerView.ViewHolder {
 
     TextView titleTV;
     TextView lastChangeTV;
-    TextView accountsNumTV;
+    TextView accountSum;
     View view;
 
-    public GroupItemsHolder(View itemView) {
+    public AccountsItemsHolder(View itemView) {
         super(itemView);
-        titleTV = itemView.findViewById(R.id.grouptTitle);
+        titleTV = itemView.findViewById(R.id.accountTitle);
         lastChangeTV = itemView.findViewById(R.id.lastChangeValue);
-        accountsNumTV = itemView.findViewById(R.id.group_accounts_num);
+        accountSum = itemView.findViewById(R.id.account_sum);
         view = itemView;
     }
 }

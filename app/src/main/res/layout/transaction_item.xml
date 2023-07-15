@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/card_shape"
+    android:id="@+id/layout">
+
+
+    <TextView
+        android:id="@+id/transactionTitle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:text="Title Here"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/date_image_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/transactionTitle"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        app:srcCompat="@drawable/baseline_access_time"
+        app:tint="@color/dark" />
+
+    <TextView
+        android:id="@+id/transactionDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transactionTitle"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/date_image_view"
+        android:gravity="center"
+        android:text="May 23, 2025"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/account_num_image_view"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/transactionDate"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        app:srcCompat="@drawable/money_24"
+        app:tint="#808080" />
+
+    <TextView
+        android:id="@+id/transactionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transactionDate"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/account_num_image_view"
+        android:gravity="center"
+        android:text="10 Shickel"
+        android:textSize="22sp" />
+  <ImageView
+        android:id="@+id/noteImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/transactionValue"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp"
+        app:srcCompat="@drawable/note_24"
+        app:tint="#808080" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transactionValue"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/account_num_image_view"
+        android:gravity="center"
+        android:text="This is a note"
+        android:textSize="16sp" />
+
+
+</RelativeLayout>

@@ -49,6 +49,7 @@ public class TransactionActivity extends AppCompatActivity {
     private TransactionsListAdapter adapter;
     private RecyclerView recyclerView;
     private ClickListener transactionClickListener;
+    private TextView accountAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,9 @@ public class TransactionActivity extends AppCompatActivity {
 
         findViewById(R.id.createTransactionBtn).setOnClickListener(view -> showCreateTransactionDialog());
         findViewById(R.id.backButton).setOnClickListener(v -> onBackPressed());
+        accountAmount = findViewById(R.id.account_amount);
+        accountAmount.setText(account.getAccountsCash() +" "+ account.getCurrency());
+
 
     }
 
@@ -98,6 +102,8 @@ public class TransactionActivity extends AppCompatActivity {
         update.put("accountsCash", cash);
         update.put("lastChange", FieldValue.serverTimestamp());
         account.setAccountsCash(cash);
+        accountAmount.setText(cash +" "+ account.getCurrency());
+
         db.collection(GROUPS_COLLECTION_PATH)
                 .document(group.getId())
                 .collection(ACCOUNTS_COLLECTION_PATH)

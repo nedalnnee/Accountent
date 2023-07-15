@@ -14,7 +14,6 @@ public class TransactionItemsHolder extends RecyclerView.ViewHolder {
     TextView transactionDate;
     TextView transactionValue;
     TextView note;
-    RelativeLayout layout;
     View view;
 
     public TransactionItemsHolder(View itemView) {
@@ -23,7 +22,6 @@ public class TransactionItemsHolder extends RecyclerView.ViewHolder {
         transactionDate = itemView.findViewById(R.id.transactionDate);
         transactionValue = itemView.findViewById(R.id.transactionValue);
         note = itemView.findViewById(R.id.note);
-        layout= itemView.findViewById(R.id.layout);
         view = itemView;
     }
 }

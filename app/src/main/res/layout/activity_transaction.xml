@@ -36,15 +36,44 @@
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
+
+            <LinearLayout
+                android:background="@color/light"
+
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="50dp"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount"
+                    android:textSize="22sp"
+                    android:padding="5dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:id="@+id/account_amount"
+                    android:textSize="22sp"
+                    android:padding="5dp"/>
+
+            </LinearLayout>
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
 
     <androidx.core.widget.NestedScrollView
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
+
+        android:minWidth="150dp"
         android:layout_marginBottom="56dp"
         android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

@@ -51,13 +51,12 @@ public class TransactionsListAdapter extends RecyclerView.Adapter<TransactionIte
         viewHolder.transactionDate.setText(formattedDate);
         viewHolder.note.setText(transactionEntity.getNote());
         if (transactionEntity.isWithdrawal()) {
-            viewHolder.transactionValue.setText("-"+transactionEntity.getAmount() );
+            viewHolder.transactionValue.setText("-" + transactionEntity.getAmount());
 
-            viewHolder.layout.setBackgroundColor(Color.parseColor("#FF6961"));
-        }
-        else {
-            viewHolder.layout.setBackgroundColor(Color.parseColor("#96DEAE"));
-            viewHolder.transactionValue.setText("+"+transactionEntity.getAmount() );
+            viewHolder.transactionValue.setTextColor(Color.parseColor("#FF1205"));
+        } else {
+            viewHolder.transactionValue.setTextColor(Color.parseColor("#38B261"));
+            viewHolder.transactionValue.setText("+" + transactionEntity.getAmount());
 
         }
 

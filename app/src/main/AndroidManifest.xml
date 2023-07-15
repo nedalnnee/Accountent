@@ -19,8 +19,7 @@
             android:exported="false" />
         <activity
             android:name=".GroupsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Fab_Bottom_app_bar" />
+            android:exported="false"/>
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />

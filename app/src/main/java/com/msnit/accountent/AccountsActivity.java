@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.msnit.accountent.accounts.AccountEntity;
 import com.msnit.accountent.accounts.AccountListAdapter;
@@ -109,6 +110,7 @@ public class AccountsActivity extends AppCompatActivity {
         db.collection(GROUPS_COLLECTION_PATH)
                 .document(group.getId())
                 .collection(ACCOUNTS_COLLECTION_PATH)
+                .orderBy("lastChange", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     accountList.clear();
@@ -123,13 +125,12 @@ public class AccountsActivity extends AppCompatActivity {
                         AccountEntity accountEntity = new AccountEntity(accountId, name, creationDate, lastChange, currency, accountsCash);
 
                         accountList.add(accountEntity);
-
                     }
+
                     adapter = new AccountListAdapter(accountList, accountClickListener);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
                     updateAccountsNumber();
-
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(AccountsActivity.this, "Failed to retrieve accounts", Toast.LENGTH_LONG).show();
@@ -137,8 +138,8 @@ public class AccountsActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
                 });
-
     }
+
 
 
     private void createAccount(String name, String groupId, String currency, int accountsCash) {
@@ -152,6 +153,7 @@ public class AccountsActivity extends AppCompatActivity {
         account.put("name", name);
         account.put("creator", userId);
         account.put("creationDate", FieldValue.serverTimestamp());
+        account.put("lastChange", FieldValue.serverTimestamp());
         account.put("currency", currency);
         account.put("accountsCash", accountsCash);
 
@@ -163,7 +165,7 @@ public class AccountsActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(AccountsActivity.this, "Account created successfully", Toast.LENGTH_LONG).show();
                     Date currentDate = new Date();
-                    AccountEntity accountEntity = new AccountEntity(accountId, name, currentDate, null, currency, accountsCash);
+                    AccountEntity accountEntity = new AccountEntity(accountId, name, currentDate, currentDate, currency, accountsCash);
                     accountList.add(accountEntity);
                     adapter.notifyItemInserted(accountList.size() - 1);
                     updateAccountsNumber();

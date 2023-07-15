@@ -23,4 +23,5 @@
     <string name="enter_amount">Enter amount</string>
     <string name="enter_note">Enter Note</string>
     <string name="back">Back\n</string>
+    <string name="amount">Amount:</string>
 </resources>

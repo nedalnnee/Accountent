@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Accountent</string>
-    <string name="deposit">سحب</string>
+    <string name="login_button_text">سجل دخولك</string>
+    <string name="login_username_text">البريد</string>
+    <string name="login_pass_text">كلمة السر</string>
+    <string name="login_sign_up_text">إنشاء حساب</string>
+    <string name="made_by_msn_it">نضال القططي</string>
+    <string name="groups">المجموعات</string>
+    <string name="friends">الأصدقاء</string>
+    <string name="settings">الإعدادات</string>
+    <string name="profile">حسابي</string>
+    <string name="my_groups">مجموعاتي</string>
+    <string name="my_accounts">حساباتي</string>
+    <string name="accounts">الحسابات</string>
+    <string name="enter_currency">أدخل العملة</string>
+    <string name="enter_initial_cash">أدخل المبلغ الأولي</string>
+    <string name="transactions">المعلاملات</string>
+    <string name="add_transaction">إضافة معاملة</string>
+    <string name="withdrawal">سحب</string>
+    <string name="deposit">إضافة</string>
+    <string name="enter_transaction_title">أدخل عنوان</string>
+    <string name="type">النوع</string>
+    <string name="enter_amount">المبلغ</string>
+    <string name="enter_note">ملاحظة:</string>
+    <string name="back">رجوع</string>
+    <string name="amount">المبلغ</string>
 </resources>

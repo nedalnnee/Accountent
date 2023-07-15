@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.msnit.accountent.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupItemsHolder> {
@@ -40,7 +42,11 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupItemsHolder> {
     public void onBindViewHolder(final GroupItemsHolder viewHolder, final int position) {
         final int index = viewHolder.getAdapterPosition();
         viewHolder.titleTV.setText(list.get(position).getName());
-        viewHolder.lastChangeTV.setText(list.get(position).getCreationDate().toString());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE - dd/MM/yyyy - HH:mm");
+        Date date = list.get(position).getCreationDate();
+        String formattedDate = dateFormat.format(date);
+        viewHolder.lastChangeTV.setText(formattedDate);
         viewHolder.accountsNumTV.setText(list.get(position).getAccountsNum() + " Accounts ");
         viewHolder.view.setOnClickListener(view -> listener.click(index));
     }

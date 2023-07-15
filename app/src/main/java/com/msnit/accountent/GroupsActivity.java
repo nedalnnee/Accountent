@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -34,7 +36,19 @@ public class GroupsActivity extends AppCompatActivity {
 
 
         FloatingActionButton createGroupBtn = findViewById(R.id.createGroupBtn);
-        createGroupBtn.setOnClickListener(view -> showCreateGroupDialog());
+        createGroupBtn.setOnClickListener(view -> {
+            replaceFragment(groupsFragment);
+            Menu menu = bottomNavigationView.getMenu();
+            for (int i = 0; i < menu.size(); i++) {
+                MenuItem menuItem = menu.getItem(i);
+                if (menuItem.getItemId() == R.id.groups) {
+                    menuItem.setChecked(true);
+                    break;
+                }
+            }
+
+            showCreateGroupDialog();
+        });
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {

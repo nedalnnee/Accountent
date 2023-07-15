@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailInput;
@@ -25,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .build();
+        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
 
 
         Button loginButton = findViewById(R.id.login);

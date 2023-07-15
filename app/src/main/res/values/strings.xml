@@ -24,4 +24,15 @@
     <string name="enter_note">Enter Note</string>
     <string name="back">Back\n</string>
     <string name="amount">Amount:</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="edit_button">Edit \n</string>
+    <string name="logout">Logout</string>
+    <string name="profile_image">User Profile image\n</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign UP</string>
+    <string name="made_by_nedal_alqutati_msn_it" translatable="false">Made By: Nedal AlQutati (MSN-IT)</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login_page">Login Page</string>
+    <string name="name">Name</string>
 </resources>

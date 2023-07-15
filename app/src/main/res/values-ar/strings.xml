@@ -25,4 +25,13 @@
     <string name="enter_note">ملاحظة:</string>
     <string name="back">رجوع</string>
     <string name="amount">المبلغ</string>
+    <string name="edit_button">تعديل</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="profile_image">الصورة الشخصية</string>
+    <string name="login">دخول</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="password">كلمة السر</string>
+    <string name="email">الإيميل</string>
+    <string name="login_page">صفحة الدخول</string>
+    <string name="name">الإسم</string>
 </resources>

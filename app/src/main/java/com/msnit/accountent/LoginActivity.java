@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.go_to_login_from_sign_up_btn).setOnClickListener((view) -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
-            finish();
         });
 
         mAuth = FirebaseAuth.getInstance();

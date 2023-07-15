@@ -35,4 +35,6 @@
     <string name="email">Email</string>
     <string name="login_page">Login Page</string>
     <string name="name">Name</string>
+    <string name="en">EN</string>
+    <string name="my_profile">My Profile</string>
 </resources>

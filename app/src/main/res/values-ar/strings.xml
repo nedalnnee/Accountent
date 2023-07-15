@@ -34,4 +34,6 @@
     <string name="email">الإيميل</string>
     <string name="login_page">صفحة الدخول</string>
     <string name="name">الإسم</string>
+    <string name="en">عربي</string>
+    <string name="my_profile">بياناتي</string>
 </resources>

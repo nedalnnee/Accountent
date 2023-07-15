@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -22,6 +23,7 @@ public class GroupsActivity extends AppCompatActivity {
     public static final String ACCOUNTS_NUM = "accountsNum";
     private static GroupsFragment groupsFragment;
 
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class GroupsActivity extends AppCompatActivity {
 
         groupsFragment = new GroupsFragment();
         replaceFragment(groupsFragment);
-
 
         FloatingActionButton createGroupBtn = findViewById(R.id.createGroupBtn);
         createGroupBtn.setOnClickListener(view -> {
@@ -75,6 +76,12 @@ public class GroupsActivity extends AppCompatActivity {
 
 
     private void replaceFragment(Fragment fragment) {
+        if (fragment.getClass().equals(GroupsFragment.class)) {
+            title = findViewById(R.id.title);
+            title.setText(getResources().getString(R.string.my_groups));
+        } else if (fragment.getClass().equals(ProfileFragment.class)) {
+            title.setText(getResources().getString(R.string.my_profile));
+        }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
                 .commit();
@@ -101,9 +108,7 @@ public class GroupsActivity extends AppCompatActivity {
                             createGroup(groupName);
                             dialog.dismiss();
                         })
-                        .setNegativeButton("Cancel", (dialog, which) -> {
-                            dialog.cancel();
-                        });
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
                 return builder.create();
             } else {
                 throw new IllegalStateException("Activity cannot be null");

@@ -1,6 +1,7 @@
 package com.msnit.accountent;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -37,6 +40,21 @@ public class ProfileFragment extends Fragment {
             getActivity().finish();
         });
 
+        Button languageBtn = view.findViewById(R.id.language);
+
+        languageBtn.setOnClickListener(v -> {
+            Locale desiredLocale;
+            if (languageBtn.getText().equals("EN"))
+                desiredLocale = new Locale("AR");
+            else
+                desiredLocale = new Locale("EN");
+
+            Configuration config = new Configuration();
+            config.setLocale(desiredLocale);
+
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            getActivity().recreate();
+        });
 
         return view;
     }

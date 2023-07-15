@@ -3,6 +3,7 @@ package com.msnit.accountent;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailInput;
@@ -44,8 +47,24 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        Button languageBtn = findViewById(R.id.language);
+        languageBtn.setOnClickListener(view -> {
+            Locale desiredLocale;
+            if (languageBtn.getText().equals("EN"))
+                desiredLocale = new Locale("AR");
+            else
+                desiredLocale = new Locale("EN");
 
+            Configuration config = new Configuration();
+            config.setLocale(desiredLocale);
 
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            reCreate();
+        });
+    }
+
+    private void reCreate() {
+        recreate();
     }
 
     @Override

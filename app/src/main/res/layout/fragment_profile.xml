@@ -15,6 +15,7 @@
             android:id="@+id/profileImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:src="@drawable/pal_512x512"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/profile_image" />
@@ -37,6 +38,14 @@
             android:textSize="16sp"
             android:paddingTop="8dp"
             android:text="Email" />
+
+        <Button
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/en" />
 
         <Button
             android:id="@+id/logoutButton"

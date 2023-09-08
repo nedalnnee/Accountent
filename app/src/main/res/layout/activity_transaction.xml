@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".TransactionActivity">
+    tools:context=".transactions.TransactionActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
         android:layout_marginBottom="56dp"
         android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".TransactionActivity">
+        tools:context=".transactions.TransactionActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

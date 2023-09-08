@@ -1,4 +1,4 @@
-package com.msnit.accountent;
+package com.msnit.accountent.user;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.msnit.accountent.R;
 
 import java.util.Locale;
 

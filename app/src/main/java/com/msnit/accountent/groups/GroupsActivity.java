@@ -1,4 +1,4 @@
-package com.msnit.accountent;
+package com.msnit.accountent.groups;
 
 
 import android.app.Activity;
@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.msnit.accountent.user.ProfileFragment;
+import com.msnit.accountent.R;
 
 public class GroupsActivity extends AppCompatActivity {
     public static final String GROUPS_COLLECTION_PATH = "groups";

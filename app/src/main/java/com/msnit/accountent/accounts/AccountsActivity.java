@@ -1,7 +1,7 @@
-package com.msnit.accountent;
+package com.msnit.accountent.accounts;
 
-import static com.msnit.accountent.GroupsActivity.ACCOUNTS_NUM;
-import static com.msnit.accountent.GroupsActivity.GROUPS_COLLECTION_PATH;
+import static com.msnit.accountent.groups.GroupsActivity.ACCOUNTS_NUM;
+import static com.msnit.accountent.groups.GroupsActivity.GROUPS_COLLECTION_PATH;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,8 +26,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.msnit.accountent.accounts.AccountEntity;
-import com.msnit.accountent.accounts.AccountListAdapter;
+import com.msnit.accountent.R;
+import com.msnit.accountent.transactions.TransactionActivity;
 import com.msnit.accountent.groups.ClickListener;
 import com.msnit.accountent.groups.GroupEntity;
 

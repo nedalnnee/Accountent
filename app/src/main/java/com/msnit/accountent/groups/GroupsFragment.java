@@ -1,7 +1,7 @@
-package com.msnit.accountent;
+package com.msnit.accountent.groups;
 
-import static com.msnit.accountent.GroupsActivity.ACCOUNTS_NUM;
-import static com.msnit.accountent.GroupsActivity.GROUPS_COLLECTION_PATH;
+import static com.msnit.accountent.groups.GroupsActivity.ACCOUNTS_NUM;
+import static com.msnit.accountent.groups.GroupsActivity.GROUPS_COLLECTION_PATH;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.msnit.accountent.groups.ClickListener;
-import com.msnit.accountent.groups.GroupEntity;
-import com.msnit.accountent.groups.GroupsListAdapter;
+import com.msnit.accountent.R;
+import com.msnit.accountent.accounts.AccountsActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +55,6 @@ public class GroupsFragment extends Fragment {
                 startActivity(intent);
             }
         };
-        getAllGroups();
 
         return view;
 
@@ -80,23 +79,31 @@ public class GroupsFragment extends Fragment {
     void createGroup(String name) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        String userId = auth.getCurrentUser().getUid();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String userId = currentUser.getUid();
         String groupId = UUID.randomUUID().toString();
+
+        String creatorName = currentUser.getDisplayName();
+        String creatorEmail = currentUser.getEmail();
 
         Map<String, Object> group = new HashMap<>();
         group.put("id", groupId);
         group.put("name", name);
         group.put("creationDate", FieldValue.serverTimestamp());
-        group.put("creator", userId);
+        group.put("creatorName", creatorName); // Add creator name
+        group.put("creatorEmail", creatorEmail); // Add creator email
         group.put(ACCOUNTS_NUM, 0);
 
-        db.collection(GROUPS_COLLECTION_PATH)
+        // Set the group document under user's groups collection
+        db.collection("users")
+                .document(userId)
+                .collection("groups")
                 .document(groupId)
                 .set(group)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Group created successfully", Toast.LENGTH_LONG).show();
                     Date currentDate = new Date();
-                    GroupEntity groupEntity = new GroupEntity(groupId, name, userId, currentDate, 0);
+                    GroupEntity groupEntity = new GroupEntity(groupId, name, creatorName, creatorEmail, currentDate, 0);
                     groupList.add(groupEntity);
                     adapter.notifyItemInserted(groupList.size() - 1);
                 })
@@ -110,8 +117,9 @@ public class GroupsFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userId = auth.getCurrentUser().getUid();
 
-        db.collection(GROUPS_COLLECTION_PATH)
-                .whereEqualTo("creator", userId)
+        db.collection("users")
+                .document(userId)
+                .collection("groups")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<GroupEntity> userGroups = new ArrayList<>();
@@ -123,12 +131,12 @@ public class GroupsFragment extends Fragment {
                     }
                     groupList = userGroups;
                     setAdapterList(getContext(), groupList, groupClickListener);
-
                 })
                 .addOnFailureListener(e -> {
                     setAdapterList(getContext(), Collections.EMPTY_LIST, groupClickListener);
                     Toast.makeText(getContext(), "NO GROUPS", Toast.LENGTH_SHORT).show();
                 });
     }
+
 
 }

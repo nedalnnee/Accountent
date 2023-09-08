@@ -1,4 +1,4 @@
-package com.msnit.accountent;
+package com.msnit.accountent.user;
 
 import static android.content.ContentValues.TAG;
 
@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.msnit.accountent.R;
+import com.msnit.accountent.groups.GroupsActivity;
 
 import java.util.Locale;
 

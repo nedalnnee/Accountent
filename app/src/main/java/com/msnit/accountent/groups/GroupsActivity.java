@@ -21,8 +21,6 @@ import com.msnit.accountent.user.ProfileFragment;
 import com.msnit.accountent.R;
 
 public class GroupsActivity extends AppCompatActivity {
-    public static final String GROUPS_COLLECTION_PATH = "groups";
-    public static final String ACCOUNTS_NUM = "accountsNum";
     private static GroupsFragment groupsFragment;
 
     private TextView title;

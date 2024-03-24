@@ -1,7 +1,5 @@
 package com.msnit.accountent.transactions;
 
-import static com.msnit.accountent.accounts.AccountsActivity.ACCOUNTS_COLLECTION_PATH;
-import static com.msnit.accountent.groups.GroupsActivity.GROUPS_COLLECTION_PATH;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,8 +38,6 @@ import java.util.UUID;
 public class TransactionActivity extends AppCompatActivity {
 
 
-    public static final String TRANSACTIONS_CASH = "transactionsCash";
-    private static final String TRANSACTIONS_COLLECTION_PATH = "transactions";
     private static GroupEntity group;
     private static AccountEntity account;
     private final List<TransactionEntity> transactionList = new ArrayList<>();
@@ -103,9 +99,9 @@ public class TransactionActivity extends AppCompatActivity {
         account.setAccountsCash(cash);
         accountAmount.setText(cash +" "+ account.getCurrency());
 
-        db.collection(GROUPS_COLLECTION_PATH)
+        db.collection("groups")
                 .document(group.getId())
-                .collection(ACCOUNTS_COLLECTION_PATH)
+                .collection("accounts")
                 .document(account.getId())
                 .update(update)
                 .addOnSuccessListener(aVoid -> {
@@ -119,11 +115,11 @@ public class TransactionActivity extends AppCompatActivity {
     private void getAllTransactions() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection(GROUPS_COLLECTION_PATH)
+        db.collection("groups")
                 .document(group.getId())
-                .collection(ACCOUNTS_COLLECTION_PATH)
+                .collection("accounts")
                 .document(account.getId())
-                .collection(TRANSACTIONS_COLLECTION_PATH)
+                .collection("transactions")
                 .orderBy("creationDate", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -132,7 +128,7 @@ public class TransactionActivity extends AppCompatActivity {
                         String transactionId = document.getString("id");
                         String name = document.getString("name");
                         Date creationDate = document.getDate("creationDate");
-                        int transactionsCash = document.getLong(TRANSACTIONS_CASH).intValue();
+                        int transactionsCash = document.getLong("transactionsCash").intValue();
                         String note = document.getString("note");
                         String type = document.getString("type");
 
@@ -164,7 +160,7 @@ public class TransactionActivity extends AppCompatActivity {
         transaction.put("name", name);
         transaction.put("creationDate", FieldValue.serverTimestamp());
         transaction.put("lastChange", FieldValue.serverTimestamp());
-        transaction.put(TRANSACTIONS_CASH, amount);
+        transaction.put("transactionsCash", amount);
         transaction.put("note", note);
 
         if (type.equals(getString(R.string.withdrawal))) {
@@ -175,11 +171,11 @@ public class TransactionActivity extends AppCompatActivity {
         transaction.put("type", type);
 
         String finalType = type;
-        db.collection(GROUPS_COLLECTION_PATH)
+        db.collection("groups")
                 .document(group.getId())
-                .collection(ACCOUNTS_COLLECTION_PATH)
+                .collection("accounts")
                 .document(account.getId())
-                .collection(TRANSACTIONS_COLLECTION_PATH)
+                .collection("transactions")
                 .document(transactionId)
                 .set(transaction)
                 .addOnSuccessListener(aVoid -> {

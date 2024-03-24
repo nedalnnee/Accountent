@@ -1,8 +1,5 @@
 package com.msnit.accountent.accounts;
 
-import static com.msnit.accountent.groups.GroupsActivity.ACCOUNTS_NUM;
-import static com.msnit.accountent.groups.GroupsActivity.GROUPS_COLLECTION_PATH;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,14 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.msnit.accountent.R;
-import com.msnit.accountent.transactions.TransactionActivity;
 import com.msnit.accountent.groups.ClickListener;
 import com.msnit.accountent.groups.GroupEntity;
+import com.msnit.accountent.transactions.TransactionActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +39,6 @@ import java.util.UUID;
 public class AccountsActivity extends AppCompatActivity {
 
 
-    public static final String ACCOUNTS_COLLECTION_PATH = "accounts";
     private static GroupEntity group;
     private AccountListAdapter adapter;
     private RecyclerView recyclerView;
@@ -89,91 +86,149 @@ public class AccountsActivity extends AppCompatActivity {
     }
 
     private void updateAccountsNumber() {
+        // Get the Firestore instance.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Get the current authenticated user.
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        Map<String, Object> update = new HashMap<>();
-        update.put(ACCOUNTS_NUM, accountList.size());
+        // Check if the user is signed in.
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
 
-        db.collection(GROUPS_COLLECTION_PATH)
-                .document(group.getId())
-                .update(update)
-                .addOnSuccessListener(aVoid -> {
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AccountsActivity.this, "Failed to update accounts number", Toast.LENGTH_LONG).show();
-                });
+            // Prepare the data to update.
+            Map<String, Object> update = new HashMap<>();
+            update.put("accountsNum", accountList.size());
+
+            // Update the data in Firestore, considering the user is in the correct group per your rules.
+            // Updated pathing: /users/{userId}/groups/{groupId}
+            db.collection("users")
+                    .document(userId)
+                    .collection("groups")
+                    .document(group.getId())
+                    .update(update)
+                    .addOnSuccessListener(aVoid -> {
+                        // Optionally handle the success scenario (e.g., log it or provide user feedback).
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle the failure scenario by showing a Toast message.
+                        Toast.makeText(AccountsActivity.this, "Failed to update accounts number", Toast.LENGTH_LONG).show();
+                    });
+        } else {
+            // If the user is not signed in, show a Toast message and potentially redirect them to a sign-in activity.
+            Toast.makeText(AccountsActivity.this, "You need to sign in to update accounts number", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void getAllAccounts() {
+        // Get the Firebase Firestore instance.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Get the current authenticated user.
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        db.collection(GROUPS_COLLECTION_PATH)
-                .document(group.getId())
-                .collection(ACCOUNTS_COLLECTION_PATH)
-                .orderBy("lastChange", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    accountList.clear();
-                    for (QueryDocumentSnapshot document : querySnapshot) {
-                        String accountId = document.getString("id");
-                        String name = document.getString("name");
-                        Date creationDate = document.getDate("creationDate");
-                        Date lastChange = document.getDate("lastChange");
-                        String currency = document.getString("currency");
-                        int accountsCash = document.getLong("accountsCash").intValue();
+        // Check if the user is signed in.
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
 
-                        AccountEntity accountEntity = new AccountEntity(accountId, name, creationDate, lastChange, currency, accountsCash);
+            // Fetch data from Firestore, considering the user is in the correct group/account per your rules.
+            // Adjusted pathing to align with Firestore rules: /users/{userId}/groups/{groupId}/accounts
+            db.collection("users")
+                    .document(userId)
+                    .collection("groups")
+                    .document(group.getId())
+                    .collection("accounts")
+                    .orderBy("lastChange", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        // Clear the existing list to avoid duplication of data when this method is run again.
+                        accountList.clear();
 
-                        accountList.add(accountEntity);
-                    }
+                        // Loop through the fetched documents.
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            // Extract data from the document.
+                            String accountId = document.getString("id");
+                            String name = document.getString("name");
+                            Date creationDate = document.getDate("creationDate");
+                            Date lastChange = document.getDate("lastChange");
+                            String currency = document.getString("currency");
 
-                    adapter = new AccountListAdapter(accountList, accountClickListener);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
-                    updateAccountsNumber();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AccountsActivity.this, "Failed to retrieve accounts", Toast.LENGTH_LONG).show();
-                    adapter = new AccountListAdapter(accountList, accountClickListener);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
-                });
+                            // Safeguard against null for accountsCash.
+                            Long accountsCashLong = document.getLong("accountsCash");
+                            int accountsCash = (accountsCashLong != null) ? accountsCashLong.intValue() : 0;
+
+                            // Create an AccountEntity object and add it to the list.
+                            AccountEntity accountEntity = new AccountEntity(accountId, name, creationDate, lastChange, currency, accountsCash);
+                            accountList.add(accountEntity);
+                        }
+
+                        // Initialize the adapter with the fetched data and set it to the RecyclerView.
+                        adapter = new AccountListAdapter(accountList, accountClickListener);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
+
+                        // Update the UI according to the fetched data. (Assuming you have implemented this method).
+                        updateAccountsNumber();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle the failure scenario by showing a Toast message and updating the UI accordingly.
+                        Toast.makeText(AccountsActivity.this, "Failed to retrieve accounts", Toast.LENGTH_LONG).show();
+
+                        // Even in the case of failure, ensure the UI is consistent and usable.
+                        adapter = new AccountListAdapter(accountList, accountClickListener);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(AccountsActivity.this));
+                    });
+        } else {
+            // If the user is not signed in, show a Toast message and potentially redirect them to a sign-in activity.
+            Toast.makeText(AccountsActivity.this, "You need to sign in to view accounts", Toast.LENGTH_LONG).show();
+        }
     }
 
 
-
     private void createAccount(String name, String groupId, String currency, int accountsCash) {
+        // Get Firestore and FirebaseAuth instances.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        String userId = auth.getCurrentUser().getUid();
-        String accountId = UUID.randomUUID().toString();
 
-        Map<String, Object> account = new HashMap<>();
-        account.put("id", accountId);
-        account.put("name", name);
-        account.put("creator", userId);
-        account.put("creationDate", FieldValue.serverTimestamp());
-        account.put("lastChange", FieldValue.serverTimestamp());
-        account.put("currency", currency);
-        account.put("accountsCash", accountsCash);
+        // Ensure the user is signed in.
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            String accountId = UUID.randomUUID().toString();
 
-        db.collection(GROUPS_COLLECTION_PATH)
-                .document(groupId)
-                .collection(ACCOUNTS_COLLECTION_PATH)
-                .document(accountId)
-                .set(account)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(AccountsActivity.this, "Account created successfully", Toast.LENGTH_LONG).show();
-                    Date currentDate = new Date();
-                    AccountEntity accountEntity = new AccountEntity(accountId, name, currentDate, currentDate, currency, accountsCash);
-                    accountList.add(accountEntity);
-                    adapter.notifyItemInserted(accountList.size() - 1);
-                    updateAccountsNumber();
+            // Prepare the account data.
+            Map<String, Object> account = new HashMap<>();
+            account.put("id", accountId);
+            account.put("name", name);
+            account.put("creator", userId);
+            account.put("creationDate", FieldValue.serverTimestamp());
+            account.put("lastChange", FieldValue.serverTimestamp());
+            account.put("currency", currency);
+            account.put("accountsCash", accountsCash);
 
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AccountsActivity.this, "Failed to create account", Toast.LENGTH_LONG).show();
-                });
+            // Ensure the path aligns with your Firestore rules and data structure.
+            // Update this path if your Firestore rules dictate a different structure.
+            db.collection("groups")
+                    .document(groupId)
+                    .collection("accounts")
+                    .document(accountId)
+                    .set(account)
+                    .addOnSuccessListener(aVoid -> {
+                        // Update the UI on success.
+                        Toast.makeText(AccountsActivity.this, "Account created successfully", Toast.LENGTH_LONG).show();
+                        Date currentDate = new Date();
+                        AccountEntity accountEntity = new AccountEntity(accountId, name, currentDate, currentDate, currency, accountsCash);
+                        accountList.add(accountEntity);
+                        adapter.notifyItemInserted(accountList.size() - 1);
+                        updateAccountsNumber();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure to add the account to Firestore.
+                        Toast.makeText(AccountsActivity.this, "Failed to create account", Toast.LENGTH_LONG).show();
+                    });
+        } else {
+            // Notify the user that they need to be signed in to create an account.
+            Toast.makeText(AccountsActivity.this, "You need to be signed in to create an account", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

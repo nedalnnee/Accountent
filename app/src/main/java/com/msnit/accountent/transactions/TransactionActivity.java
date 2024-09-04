@@ -15,25 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.msnit.accountent.R;
 import com.msnit.accountent.accounts.AccountEntity;
 import com.msnit.accountent.groups.ClickListener;
 import com.msnit.accountent.groups.GroupEntity;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class TransactionActivity extends AppCompatActivity {
 
@@ -74,7 +65,7 @@ public class TransactionActivity extends AppCompatActivity {
         findViewById(R.id.createTransactionBtn).setOnClickListener(view -> showCreateTransactionDialog());
         findViewById(R.id.backButton).setOnClickListener(v -> onBackPressed());
         accountAmount = findViewById(R.id.account_amount);
-        accountAmount.setText(account.getAccountsCash() +" "+ account.getCurrency());
+        accountAmount.setText(account.getAccountsCash() + " " + account.getCurrency());
 
 
     }
@@ -86,107 +77,17 @@ public class TransactionActivity extends AppCompatActivity {
     }
 
     private void updateAccount(TransactionEntity transactionEntity) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> update = new HashMap<>();
-        int cash = account.getAccountsCash();
-        if (transactionEntity.isWithdrawal()) {
-            cash -= transactionEntity.getAmount();
-
-        } else cash += transactionEntity.getAmount();
-        update.put("accountsCash", cash);
-        update.put("lastChange", FieldValue.serverTimestamp());
-        account.setAccountsCash(cash);
-        accountAmount.setText(cash +" "+ account.getCurrency());
-
-        db.collection("groups")
-                .document(group.getId())
-                .collection("accounts")
-                .document(account.getId())
-                .update(update)
-                .addOnSuccessListener(aVoid -> {
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(TransactionActivity.this, "Failed to update group transactions", Toast.LENGTH_LONG).show();
-                });
     }
 
 
     private void getAllTransactions() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("groups")
-                .document(group.getId())
-                .collection("accounts")
-                .document(account.getId())
-                .collection("transactions")
-                .orderBy("creationDate", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    transactionList.clear();
-                    for (QueryDocumentSnapshot document : querySnapshot) {
-                        String transactionId = document.getString("id");
-                        String name = document.getString("name");
-                        Date creationDate = document.getDate("creationDate");
-                        int transactionsCash = document.getLong("transactionsCash").intValue();
-                        String note = document.getString("note");
-                        String type = document.getString("type");
-
-                        TransactionEntity transactionEntity = new TransactionEntity(transactionId, name, creationDate, transactionsCash, note, type);
-
-                        transactionList.add(transactionEntity);
-                    }
-
-                    adapter = new TransactionsListAdapter(transactionList, transactionClickListener);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(TransactionActivity.this, "Failed to retrieve transactions", Toast.LENGTH_LONG).show();
-                    adapter = new TransactionsListAdapter(transactionList, transactionClickListener);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
-                });
     }
 
 
     private void createTransaction(String name, String type, int transactionsCash, String note) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String transactionId = UUID.randomUUID().toString();
 
-        Map<String, Object> transaction = new HashMap<>();
-        int amount = Math.abs(transactionsCash);
-        transaction.put("id", transactionId);
-        transaction.put("name", name);
-        transaction.put("creationDate", FieldValue.serverTimestamp());
-        transaction.put("lastChange", FieldValue.serverTimestamp());
-        transaction.put("transactionsCash", amount);
-        transaction.put("note", note);
-
-        if (type.equals(getString(R.string.withdrawal))) {
-            type = "withdrawal";
-        } else {
-            type = "deposit";
-        }
-        transaction.put("type", type);
-
-        String finalType = type;
-        db.collection("groups")
-                .document(group.getId())
-                .collection("accounts")
-                .document(account.getId())
-                .collection("transactions")
-                .document(transactionId)
-                .set(transaction)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(TransactionActivity.this, "Transaction created successfully", Toast.LENGTH_LONG).show();
-                    Date currentDate = new Date();
-                    TransactionEntity transactionEntity = new TransactionEntity(transactionId, name, currentDate, amount, note, finalType);
-                    transactionList.add(0, transactionEntity); // Add at the beginning of the list
-                    adapter.notifyItemInserted(0); // Notify adapter of the new item at position 0
-                    updateAccount(transactionEntity);
-                })
-                .addOnFailureListener(e -> Toast.makeText(TransactionActivity.this, "Failed to create transaction", Toast.LENGTH_LONG).show());
     }
 
     public static class CreateTransactionDialogFragment extends DialogFragment {
@@ -202,17 +103,14 @@ public class TransactionActivity extends AppCompatActivity {
             if (activity != null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 View view = activity.getLayoutInflater().inflate(R.layout.dialog_create_transaction, null);
-                builder.setView(view)
-                        .setTitle("Create Transaction")
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            String transactionName = transactionNameEditText.getText().toString();
-                            String type = typeSpinner.getSelectedItem().toString();
-                            int amount = Integer.parseInt(amountEditText.getText().toString());
-                            String note = noteEditText.getText().toString();
-                            createTransaction(transactionName, type, amount, note);
-                            dialog.dismiss();
-                        })
-                        .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.setView(view).setTitle("Create Transaction").setPositiveButton("OK", (dialog, which) -> {
+                    String transactionName = transactionNameEditText.getText().toString();
+                    String type = typeSpinner.getSelectedItem().toString();
+                    int amount = Integer.parseInt(amountEditText.getText().toString());
+                    String note = noteEditText.getText().toString();
+                    createTransaction(transactionName, type, amount, note);
+                    dialog.dismiss();
+                }).setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
                 // Initialize the EditText and Spinner fields
                 transactionNameEditText = view.findViewById(R.id.editTextTransactionName);

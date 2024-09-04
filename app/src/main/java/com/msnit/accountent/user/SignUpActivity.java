@@ -8,20 +8,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.msnit.accountent.R;
 
 public class SignUpActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        mAuth = FirebaseAuth.getInstance();
 
         Button create = findViewById(R.id.create_user_account);
         EditText nameInput = findViewById(R.id.editTextTextPersonName);
@@ -29,11 +24,11 @@ public class SignUpActivity extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInputSignUp);
 
 
-        create.setOnClickListener((e) -> createUser(nameInput,emailInput, passwordInput));
+        create.setOnClickListener((e) -> createUser(nameInput, emailInput, passwordInput));
 
     }
 
-    private void createUser(EditText nameInput,EditText emailInput, EditText passwordInput) {
+    private void createUser(EditText nameInput, EditText emailInput, EditText passwordInput) {
 
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
@@ -42,32 +37,14 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "حقل فارغ!!", Toast.LENGTH_SHORT).show();
             return;
         }
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        setName(nameInput.getText().toString());
-                        updateUI(user);
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "فشل إنشاء حساب!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+
     }
 
     private void setName(String name) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .build();
-
-
-        user.updateProfile(profileUpdates);
 
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(Object user) {
         Toast.makeText(getApplicationContext(), "تم إنشاء حسابك - يمكنك الآن تسجيل الدخول ", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
         startActivity(intent);

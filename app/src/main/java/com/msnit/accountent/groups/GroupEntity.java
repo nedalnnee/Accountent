@@ -1,18 +1,19 @@
 package com.msnit.accountent.groups;
 
-import com.msnit.accountent.accounts.AccountEntity;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
+@Entity
 public class GroupEntity implements Serializable {
+    @ColumnInfo(name = "id")
     private String id;
     private String name;
     private String creatorName;
@@ -21,13 +22,12 @@ public class GroupEntity implements Serializable {
     private Date lastChange;
     private int accountsNum;
 
-
-    public GroupEntity(String id, String name, String creatorName, String creatorEmail, Date creationDate, int accountsNum) {
+    public GroupEntity(String id, String name, String creatorName, String creatorEmail, int accountsNum) {
         this.id = id;
         this.name = name;
         this.creatorName = creatorName;
         this.creatorEmail = creatorEmail;
-        this.creationDate = creationDate;
+        this.creationDate = new Date();
         this.accountsNum = accountsNum;
     }
 }

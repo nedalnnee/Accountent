@@ -1,22 +1,14 @@
 package com.msnit.accountent.user;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.msnit.accountent.R;
 import com.msnit.accountent.groups.GroupsActivity;
 
@@ -25,16 +17,11 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity {
     EditText emailInput;
     EditText passwordInput;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        FirebaseApp.initializeApp(this);
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .build();
-        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
 
 
         Button loginButton = findViewById(R.id.login);
@@ -48,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        mAuth = FirebaseAuth.getInstance();
         Button languageBtn = findViewById(R.id.language);
         languageBtn.setOnClickListener(view -> {
             Locale desiredLocale;
@@ -72,10 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            login();
-        }
+//        if (currentUser != null) {
+//            login();
+//        }
     }
 
 
@@ -85,21 +70,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (email.trim().isBlank() || password.trim().isBlank()) {
             Toast.makeText(getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
-            return;
         }
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success");
-                        login();
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.getException());
 
-                        failedLogin();
-                    }
-                });
     }
 
     private void failedLogin() {
